@@ -19,7 +19,7 @@ a la de su carrera.
 Este excel es posteriormente encodeado en BASE64, y es devuelto al clinete, junto con el tipo mime correspondiente a un tipo excel, y el nombre de este
 mismo.
 
-* Se puede encontrar mas informacion en la carpeta "Material adicional" del repositorio *
+* Se puede encontrar mas informacion en la carpeta "Material Adicional" del repositorio *
 """
 #########################################################      Librerias y Herramientas Importadas      #########################################################
 import logging ###Libreria para el sistema
@@ -39,6 +39,8 @@ from spyne.model.primitive import String
 ### Sector de librerias importadas por requerimientos
 from openpyxl import Workbook ###Libreria para manejo de archivos excel
 import base64                 ###Libreria para trabajar BASE64
+from mimetypes import guess_type, guess_extension
+import re
 
 ############################################################      Funciones Externas Utilizadas      ############################################################
 def ordenar(carrera): ###Funcion encargada de ordenar el listado de alumnos de una carrera; utiliza el metodo Quicksort; el parametro que recive es una lista
@@ -163,6 +165,77 @@ def insertar(carreras): ###Funcion encargada de crear y poblar las diversas hoja
     nombre="Admision UTEM.xlsx"
     excel.save(nombre) ###Y realiza el guardado del excel en la maquina
 
+
+def extrapolarMime(nombre): ###Funcion para corroborar el tipo mime en base al nombre
+    mimetuple=guess_type(nombre) ###Obtiene un listado de tipos mime para el nombre
+    if(mimetuple[0]=="application/vnd.ms-excel" and re.search(".csv$" , nombre)): ###En caso de serlo, retornara el tipo mime "text/csv"
+        return "text/csv"
+    else:
+        return mimetuple[0] ###En caso contrario, retornara una distinta
+
+def obtenerMime(stringstream): ###Funcion para corroborar el tipo mime del string en base64
+    if(stringstream):
+        string = stringstream[0:200]
+        stringb = string[0:43]+'='
+        if(determinarBase64(stringb)):
+            string64 = (base64.b64decode(stringb.encode("utf-8"))).decode("utf-8")
+            if(re.search("text\/(\w+)", string64)):                
+                if(re.findall("text\/(\w+)", string64)[0]=="csv"):
+                    return "text/csv"
+            elif(re.search("(.+)\.(\w+)",string64)):                
+                lista = (re.findall("(.+)\.(\w+)",string64))
+                for caso in lista:
+                    for palabra in caso:
+                        if(palabra=="csv"):
+                            return "text/csv"
+                        elif(palabra=="txt"):
+                            return "text/plain"
+            elif(re.search("data:text\/(\w+)", string64)):
+                if(re.findall("data:text\/(\w+)", string64)[0]=="csv"):
+                    return "text/csv"
+            return "Codificado"
+        elif(re.search("text\/(\w+)", string)):
+            if(re.findall("text\/(\w+)", string)[0]=="csv"):
+                return "text/csv"
+        elif(re.search("(.+)\.(\w+)",string)):
+            lista = (re.findall("(.+)\.(\w+)",string))
+            for caso in lista:
+                for palabra in caso:
+                    if(palabra=="csv"):
+                        return "text/csv"
+                    elif(palabra=="txt"):
+                        return "text/plain"
+        elif(re.search("data:text\/(\w+)", string)):
+            if(re.findall("data:text\/(\w+)", string)[0]=="csv"):
+                return "text/csv"
+        return "Invalid"
+
+def determinarBase64(stringbin): ###Funcion que corrobora que el string recibido esta en base64
+    try:
+        if isinstance(stringbin, str):
+            strbytes = bytes(stringbin, 'ascii')
+        elif isinstance(stringbin, bytes):
+            strbytes = stringbin
+        else:
+            raise ValueError("El arumento debe ser un string o un string binario")
+        return base64.b64encode(base64.b64decode(strbytes)) == strbytes
+    except Exception:
+        return False
+
+def corroborarTipoMime(nombre, string): ###Funcion encargada de corroborar si el tipo mime del string base64 y el nombre del archivo concuerdan
+    mimeString=obtenerMime(string)  ###Confirma tipo mime del string base64
+    mimeName=extrapolarMime(nombre) ###Confirma tipo mime del nombre
+    if(not mimeName): ###En el caso de que el tipo mime del nombre no sea valido...
+        return False
+    elif(mimeString=="Invalid"): ###... o en el caso de que no sea un string valido...
+        return False
+    elif(mimeString=="Codificado" and mimeName=="text/csv"): ###En caso de confirmarse que esta base64, y que el tipo mime es TEXT/CSV, retorna un True
+        return True
+    elif(not (mimeString==mimeName)): ##... o en el caso de que no uno no sea del tipo mime correspondiente, retornara un False
+        return False
+    return True
+               
+
 ##############################################################      Servicio API desarrollado      ##############################################################
 class psuService(ServiceBase):                                    ###Declaracion de clase "psuService" para consumo de la API
     @rpc(Unicode, Unicode, Unicode, _returns = Iterable(Unicode)) ###Decorador para consumo de la API
@@ -179,6 +252,12 @@ class psuService(ServiceBase):                                    ###Declaracion
         for i in range(0, 12):
             todos.append([])
 
+        if(corroborarTipoMime(nombre_archivo, dato_64)): ###Comprobacion de que el tipo mime concuerde con el establecido en el nombre y el archivo enviado en base64
+            pass
+        else: ###En caso de no serlo, entrega una aviso del error y da un ejemplo al usuario; luego termina el proceso
+            yield("\n\nExtension no compatible, asegurese de especificar nombre completo del archivo (incluyendo extension) y el archivo en base64\n\nEjemplo de ingreso\nnombre: 5000.csv  mime:.csv  datos_64: *el string en base 64*")
+            return 0
+        
         ###Se realiza el cambio la naturaleza del string en base64 a texto plano 
         base64_bytes = dato_64.encode('ascii')
         message_bytes = base64.b64decode(base64_bytes)
@@ -624,12 +703,16 @@ class psuService(ServiceBase):                                    ###Declaracion
         insertar(carreras) ###Creacion y llenado del excel final
         todo=open("Admision UTEM.xlsx", 'rb').read()  ###Lectura del excel creado
         exc_64=base64.b64encode(todo).decode('UTF-8') ###Guardado en base64
-        mime_exc="holi"
 
         ###Retorno del nombre del archivo, el tipo MIME, y el string base64 del excel
-        yield("Admision UTEM.xlsx")
-        yield(mime_exc)
-        yield(exc_64)
+        yield("Admision UTEM.xlsx") ###Nombre del archivo excel
+        for t in guess_type("Admision UTEM.xlsx"): ###Ciclo para entregar el tipo mime del excel
+            if(t==None):
+                pass
+            else:    
+                yield(t)
+                break
+        yield(exc_64) ###Devolucion del string base64 del excel
 
 ############################################################      Declaracion API para consumo      #############################################################
 application = Application(
