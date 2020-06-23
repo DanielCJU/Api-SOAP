@@ -11,14 +11,11 @@ Resumen:
 API SOAP desarrollada en Python; esta API recibe un listado CSV de, como minimo, 2200 estudiantes (estructurado mediante los datos: RUT;PUNTAJES, siendo
 PUNTAJES los puntajes que obtuvieron de NEM, RANKING, PSU lENGUAJE, PSU MATEMATICAS, PSU CIENCIAS, PSU HISTORIA) en BASE64, el MIME type del mismo,y el 
 nombre del archivo .csv original.
-
 La API se encarga de ordenar a los mejores estudiantes para cada carrera, en funcion de su puntaje ponderado que corresponde a dicha carrera. Una vez
 hecho ese ordenamiento, estos alumnos son registrados en un archivo excel, en el cual cada grupo de alumnos se encuentra en una hoja, la cual corresponde
 a la de su carrera.
-
 Este excel es posteriormente encodeado en BASE64, y es devuelto al clinete, junto con el tipo mime correspondiente a un tipo excel, y el nombre de este
 mismo.
-
 * Se puede encontrar mas informacion en la carpeta "Material Adicional" del repositorio *
 """
 #########################################################      Librerias y Herramientas Importadas      #########################################################
@@ -43,6 +40,7 @@ from mimetypes import guess_type, guess_extension
 import re
 
 ############################################################      Funciones Externas Utilizadas      ############################################################
+
 def ordenar(carrera): ###Funcion encargada de ordenar el listado de alumnos de una carrera; utiliza el metodo Quicksort; el parametro que recive es una lista
     tope=len(carrera)
     izquierda=[]
@@ -64,22 +62,35 @@ def ordenar(carrera): ###Funcion encargada de ordenar el listado de alumnos de u
 def almacenar(carreras, datos, max_ing): ###Funcion que realiza el guardado de los estudiantes en las listas correspondientes; recibe como parametros, una lista, un par de datos [RUT, PUNTAJE] y el rango maximo de almacenaje
     sw=0 ###Variable importante, permite dentro del sistema, identificar si ya se realizo el almacenamiento del valor ingresado
     n=len(carreras)
+    inicio=0
     if(n==max_ing): ###En funcion de la cantidad de elementos en la lista, es su funcionamiento, en el caso de que se encuentre a tope la lista
         if(datos[1]<carreras[max_ing-1][1]): ###Se realizara una comprobacion sobre si el nuevo puntaje es mayor que el mas pequeño; en caso de serlo, se devuelve inmediatemete, ya que no ingresara al listado por esa misma razon
             return carreras
-        for posicion in range (0,max_ing): ###En caso de ser mas grande que el mas pequeño, se procedera a identificar mediante un for...
-            if(sw==0): ###... en caso de que aun no se almacena, se estara buscando el caso donde este la variable inmediatamente mas pequeña, para ingresar al sistema...
-                if(carreras[posicion][1]<=datos[1]):
-                    aux=carreras[posicion]
-                    carreras[posicion]=datos
-                    sw=1
-            else:      ###... y empezar a realizar la "correccion" de la lista, la cual consta de ir corriendo los elementos hasta eliminar el ultimo
-                if(posicion<21):
-                    aux2=carreras[posicion]
-                    carreras[posicion]=aux
-                    aux=aux2
-                elif(posicion==21):
-                    carreras[posicion]=aux
+        elif(datos[1]>=carreras[209][1]):
+            inicio=0
+        elif(datos[1]<carreras[209][1] and datos[1]>=carreras[419][1]):
+            inicio=210
+        elif(datos[1]<carreras[419][1] and datos[1]>=carreras[629][1]):
+            inicio=210*2
+        elif(datos[1]<carreras[629][1] and datos[1]>=carreras[839][1]):
+            inicio=210*3
+        elif(datos[1]<carreras[839][1] and datos[1]>=carreras[1049][1]):
+            inicio=210*4
+        elif(datos[1]<carreras[1049][1] and datos[1]>=carreras[1259][1]):
+            inicio=210*5
+        elif(datos[1]<carreras[1259][1] and datos[1]>=carreras[1469][1]):
+            inicio=210*6
+        elif(datos[1]<carreras[1469][1] and datos[1]>=carreras[1679][1]):
+            inicio=210*7
+        elif(datos[1]<carreras[1679][1] and datos[1]>=carreras[1889][1]):
+            inicio=210*8
+        elif(datos[1]<carreras[1889][1] and datos[1]>=carreras[2099][1]):
+            inicio=210*9
+        for posicion in range (inicio, max_ing): ###En caso de ser mas grande que el mas pequeño, se procedera a identificar mediante un for...
+            if(carreras[posicion][1]<=datos[1]):
+                carreras=carreras[0:(posicion)]+[datos]+carreras[(posicion):2099]
+                return carreras
+                    
         return carreras
     elif(n>=0 and n<(max_ing-1)): ###En caso de que aun no se llegue al tope, simplemente se iran agregando los valores a la lista
         carreras.append(datos)
@@ -222,24 +233,33 @@ def determinarBase64(stringbin): ###Funcion que corrobora que el string recibido
     except Exception:
         return False
 
-def corroborarTipoMime(nombre, string): ###Funcion encargada de corroborar si el tipo mime del string base64 y el nombre del archivo concuerdan
+def corroborarTipoMime(nombre, string, tipoMIME): ###Funcion encargada de corroborar si el tipo mime del string base64, el tipo mime enviado y el del nombre del archivo concuerdan
     mimeString=obtenerMime(string)  ###Confirma tipo mime del string base64
     mimeName=extrapolarMime(nombre) ###Confirma tipo mime del nombre
     if(not mimeName): ###En el caso de que el tipo mime del nombre no sea valido...
         return False
     elif(mimeString=="Invalid"): ###... o en el caso de que no sea un string valido...
         return False
-    elif(mimeString=="Codificado" and mimeName=="text/csv"): ###En caso de confirmarse que esta base64, y que el tipo mime es TEXT/CSV, retorna un True
+    elif(mimeString=="Codificado" and mimeName==tipoMIME): ###En caso de confirmarse que esta base64, y que el tipo mime es TEXT/CSV, retorna un True
         return True
     elif(not (mimeString==mimeName)): ##... o en el caso de que no uno no sea del tipo mime correspondiente, retornara un False
         return False
     return True
-               
 
 ##############################################################      Servicio API desarrollado      ##############################################################
 class psuService(ServiceBase):                                    ###Declaracion de clase "psuService" para consumo de la API
     @rpc(Unicode, Unicode, Unicode, _returns = Iterable(Unicode)) ###Decorador para consumo de la API
     def separacion(ctx, nombre_archivo, mime, dato_64):           ###Funcion a consumir, recibe como parametro un ctx (viene por defecto), nombre del archivo enviado en base64, el tipo mime seleccionado del archivo enviado, y el archivo mismo, en base64
+        """
+        Detalle importante para el profesor: al estar trabajando en soap, y por el mencionado problema de too long 
+        por el string base64, es que decidi añadir la siguiente linea, por si es que llegara a ser necesaria
+        
+        dato_64=open("puntajes-64.txt", "r")
+        
+        Gracias a que el programa esta elaborado en python, es pisoble hacer algo asi; si desea usar otro archivo en 
+        otra ubicacion distinta a la de este codigo python, recordar cambiar lo de *puntajes.csv".
+        """
+        print("Datos recibidos")
         ###Activacion de variables de apoyo y almacenamiento
         n=[0, 0, 0, 0, 0, 0] ###Contadores para areas con multiples carreras
         matriculados=[]      ###Listado de alumnos ya matriculados
@@ -251,11 +271,12 @@ class psuService(ServiceBase):                                    ###Declaracion
         todos = []  ###Lista de listas (listado de los mejores por area)
         for i in range(0, 12):
             todos.append([])
-
-        if(corroborarTipoMime(nombre_archivo, dato_64)): ###Comprobacion de que el tipo mime concuerde con el establecido en el nombre y el archivo enviado en base64
+        
+        mime=mime.lower() ###Se para el tipo mime a minusculas para la comparacion del tipo mime detectado y el tipo mime recibido
+        if(corroborarTipoMime(nombre_archivo, dato_64,mime)): ###Comprobacion de que el tipo mime concuerde con el establecido en el nombre y el archivo enviado en base64
             pass
         else: ###En caso de no serlo, entrega una aviso del error y da un ejemplo al usuario; luego termina el proceso
-            yield("\n\nExtension no compatible, asegurese de especificar nombre completo del archivo (incluyendo extension) y el archivo en base64\n\nEjemplo de ingreso\nnombre: 5000.csv  mime:.csv  datos_64: *el string en base 64*")
+            yield("\nExtension no compatible, asegurese de especificar nombre completo del archivo (incluyendo extension) y el archivo en base64\n\nEjemplo de ingreso\nnombre: 5000.csv  mime:.csv  datos_64: *el string en base 64*")
             return 0
         
         ###Se realiza el cambio la naturaleza del string en base64 a texto plano 
@@ -263,11 +284,19 @@ class psuService(ServiceBase):                                    ###Declaracion
         message_bytes = base64.b64decode(base64_bytes)
         message = message_bytes.decode('ascii')
         message=message.split("\n") ###Se realiza separacion de cada linea del texto
-
+        print(len(message))
+        if(len(message)<2101): ###Comprobador de que consta con la cantidad minima de lineas para el funcionamiento del sistema
+            yield("El documento .csv enviado contiene una menor cantidad de personas de minimas requeridas (2101 personas)")
+            return 0
+        print("Datos corroborados")
+        q=0
         ###Ciclo iterativo linea por linea para obtener toda la informacion del documento recibido
         for linea in message: 
             if(len(linea)!=0): ###Condicion para detectar si el arreglo esta vacio (ultima linea), o tienen contenido
                 linea=linea.split(";") ###Se realiza la separacion de los valores
+
+                if(q%10000==0):
+                    print(q)
 
                 ###Se realiza la conersion de los valores para poder operarlos y registrarlos
                 rut=linea[0]
@@ -336,7 +365,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                 todos[11]=almacenar(todos[11], [rut,c19_28], 2100)
             else: ###Caso de la ultima linea (linea vacia)
                 pass
-
+            q=q+1
+        print("Datos almacenados")
         ###Sector en el que se procede a generar los listados de matriculados por carrera
         for i in range(0,12):
             posicion=0               ###Variable para recorrer listado de los mejores de areas con 1 carrera
@@ -699,11 +729,12 @@ class psuService(ServiceBase):                                    ###Declaracion
                                     matriculados.append(todos[i][posicion_ing[2]][0])
                                     posicion_ing[2]=posicion_ing[2]+1
                         n[5]=0
+        print("Listados generados")
         ###Manejo del excel a entregar
         insertar(carreras) ###Creacion y llenado del excel final
         todo=open("Admision UTEM.xlsx", 'rb').read()  ###Lectura del excel creado
         exc_64=base64.b64encode(todo).decode('UTF-8') ###Guardado en base64
-
+        print("Archivo generado")
         ###Retorno del nombre del archivo, el tipo MIME, y el string base64 del excel
         yield("Admision UTEM.xlsx") ###Nombre del archivo excel
         for t in guess_type("Admision UTEM.xlsx"): ###Ciclo para entregar el tipo mime del excel
@@ -730,7 +761,7 @@ if __name__ == '__main__':
     # Python's built-in wsgi server but you're not
     # supposed to use it in production.
     from wsgiref.simple_server import make_server
-    wsgi_app = WsgiApplication(application)
+    wsgi_app = WsgiApplication(application, chunked=True, max_content_length=2097152*100, block_length=1024*1024*500)
     server = make_server('127.0.0.1', 8000, wsgi_app) ###Activacion del servidor en ip 127.0.0.1 (Localhost), en el puerto 8000
     print("\nServidor en Linea") ###Aviso en terminal de que el servidor esta operativo
     server.serve_forever() ###Activacion del servidor
