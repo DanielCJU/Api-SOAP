@@ -569,7 +569,6 @@ class psuService(ServiceBase):                                    ###Declaracion
         postulantes_actuales=postulantes_anteriores
 
         while(len(postulantes_anteriores)!=0):
-            j+=1
             postulantes_anteriores=[]
             postulantes_anteriores=postulantes_actuales
             postulantes_actuales=[]
@@ -596,14 +595,15 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_actuales, 12*2)
                             break
                     elif(i==2):
-                        if(len(carreras[20])==60):
-                            if(postulante[24]<carreras[20][59][24]):
+                        print(len(carreras[20]))
+                        if(len(carreras[20])==130):
+                            if(postulante[24]<carreras[20][129][24]):
                                 pass
                             else:
-                                carreras[20]=almacenar(carreras[20], postulante, 60, postulantes_actuales, 12*2)
+                                carreras[20]=almacenar(carreras[20], postulante, 130, postulantes_actuales, 12*2)
                                 break
                         else:
-                            carreras[20]=almacenar(carreras[20], postulante, 60, postulantes_actuales, 12*2)
+                            carreras[20]=almacenar(carreras[20], postulante, 130, postulantes_actuales, 12*2)
                             break
                     elif(i==3):
                         if(len(carreras[7])==100):
@@ -646,14 +646,14 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_actuales, 12*2)
                             break
                     elif(i==7):
-                        if(len(carreras[24])==60):
-                            if(postulante[24]<carreras[24][59][24]):
+                        if(len(carreras[24])==90):
+                            if(postulante[24]<carreras[24][89][24]):
                                 pass
                             else:
-                                carreras[24]=almacenar(carreras[24], postulante, 60, postulantes_actuales, 12*2)
+                                carreras[24]=almacenar(carreras[24], postulante, 90, postulantes_actuales, 12*2)
                                 break
                         else:
-                            carreras[24]=almacenar(carreras[24], postulante, 60, postulantes_actuales, 12*2)
+                            carreras[24]=almacenar(carreras[24], postulante, 90, postulantes_actuales, 12*2)
                             break
                     elif(i==8):
                         if(len(carreras[18])==25):
@@ -666,24 +666,24 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_actuales, 12*2)
                             break
                     elif(i==9):
-                        if(len(carreras[21])==60):
-                            if(postulante[24]<carreras[21][59][24]):
+                        if(len(carreras[21])==200):
+                            if(postulante[24]<carreras[21][199][24]):
                                 pass
                             else:
-                                carreras[21]=almacenar(carreras[21], postulante, 60, postulantes_actuales, 12*2)
+                                carreras[21]=almacenar(carreras[21], postulante, 200, postulantes_actuales, 12*2)
                                 break
                         else:
-                            carreras[21]=almacenar(carreras[21], postulante, 60, postulantes_actuales, 12*2)
+                            carreras[21]=almacenar(carreras[21], postulante, 200, postulantes_actuales, 12*2)
                             break
                     elif(i==10):
-                        if(len(carreras[23])==60):
-                            if(postulante[24]<carreras[23][59][24]):
+                        if(len(carreras[23])==80):
+                            if(postulante[24]<carreras[23][79][24]):
                                 pass
                             else:
-                                carreras[23]=almacenar(carreras[23], postulante, 60, postulantes_actuales, 12*2)
+                                carreras[23]=almacenar(carreras[23], postulante, 80, postulantes_actuales, 12*2)
                                 break
                         else:
-                            carreras[23]=almacenar(carreras[23], postulante, 60, postulantes_actuales, 12*2)
+                            carreras[23]=almacenar(carreras[23], postulante, 80, postulantes_actuales, 12*2)
                             break
                     elif(i==11):
                         if(len(carreras[3])==125):
