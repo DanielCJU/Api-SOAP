@@ -92,7 +92,7 @@ def almacenar(carreras, datos, max_ing, expulsados, lugar): ###Funcion que reali
                 inicio=20
             elif(datos[lugar]<=carreras[40][lugar] and datos[lugar]>carreras[60][lugar]):
                 inicio=20*2
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>=carreras[80][lugar]):
+            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>=carreras[79][lugar]):
                 inicio=20*3
         elif(max_ing==125):
             if(datos[lugar]>carreras[25][lugar]):
@@ -254,193 +254,6 @@ def almacenar(carreras, datos, max_ing, expulsados, lugar): ###Funcion que reali
     elif(n==(max_ing-1)): ###Y, en el caso de que tras ingresar este valor, se alcance el tope, tras ingresarlo, se realizara un ordenamiento descendente de la lista. 
         carreras.append(datos)
         return ordenar(carreras, lugar)
-
-def almacenar_cambiante(carreras, datos, max_ing, expulsados, lugar): ###Funcion que realiza el guardado de los estudiantes en las listas correspondientes; recibe como parametros, una lista, un par de datos [RUT, PUNTAJE] y el rango maximo de almacenaje
-    n=len(carreras)
-    inicio=0
-    if(n==max_ing): ###En funcion de la cantidad de elementos en la lista, es su funcionamiento, en el caso de que se encuentre a tope la lista
-        if(datos[lugar]<carreras[max_ing-1][lugar]):
-            return False
-        if(max_ing==35):
-            if(datos[lugar]>carreras[7][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[7][lugar] and datos[lugar]>carreras[14][lugar]):
-                inicio=7
-            elif(datos[lugar]<=carreras[14][lugar] and datos[lugar]>carreras[21][lugar]):
-                inicio=7*2
-            elif(datos[lugar]<=carreras[21][lugar] and datos[lugar]>carreras[28][lugar]):
-                inicio=7*3
-            elif(datos[lugar]<=carreras[28][lugar] and datos[lugar]>=carreras[34][lugar]):
-                inicio=7*4
-        elif(max_ing==80):
-            if(datos[lugar]>carreras[20][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[20][lugar] and datos[lugar]>carreras[40][lugar]):
-                inicio=20
-            elif(datos[lugar]<=carreras[40][lugar] and datos[lugar]>carreras[60][lugar]):
-                inicio=20*2
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>=carreras[80][lugar]):
-                inicio=20*3
-        elif(max_ing==125):
-            if(datos[lugar]>carreras[25][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[25][lugar] and datos[lugar]>carreras[50][lugar]):
-                inicio=25
-            elif(datos[lugar]<=carreras[50][lugar] and datos[lugar]>carreras[75][lugar]):
-                inicio=25*2
-            elif(datos[lugar]<=carreras[75][lugar] and datos[lugar]>carreras[100][lugar]):
-                inicio=25*3
-            elif(datos[lugar]<=carreras[100][lugar] and datos[lugar]>=carreras[124][lugar]):
-                inicio=25*4
-        elif(max_ing==30):
-            if(datos[lugar]>carreras[6][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[6][lugar] and datos[lugar]>carreras[12][lugar]):
-                inicio=6
-            elif(datos[lugar]<=carreras[12][lugar] and datos[lugar]>carreras[18][lugar]):
-                inicio=6*2
-            elif(datos[lugar]<=carreras[18][lugar] and datos[lugar]>carreras[24][lugar]):
-                inicio=6*3
-            elif(datos[lugar]<=carreras[24][lugar] and datos[lugar]>=carreras[29][lugar]):
-                inicio=6*4
-        elif(max_ing==90):
-            if(datos[lugar]>carreras[15][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[15][lugar] and datos[lugar]>carreras[30][lugar]):
-                inicio=15
-            elif(datos[lugar]<=carreras[30][lugar] and datos[lugar]>carreras[45][lugar]):
-                inicio=15*2
-            elif(datos[lugar]<=carreras[45][lugar] and datos[lugar]>carreras[60][lugar]):
-                inicio=15*3
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>carreras[75][lugar]):
-                inicio=15*4
-            elif(datos[lugar]<=carreras[75][lugar] and datos[lugar]>=carreras[89][lugar]):
-                inicio=15*5
-        elif(max_ing==25):
-            if(datos[lugar]>carreras[5][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[5][lugar] and datos[lugar]>carreras[10][lugar]):
-                inicio=5
-            elif(datos[lugar]<=carreras[10][lugar] and datos[lugar]>carreras[15][lugar]):
-                inicio=5*2
-            elif(datos[lugar]<=carreras[15][lugar] and datos[lugar]>carreras[20][lugar]):
-                inicio=5*3
-            elif(datos[lugar]<=carreras[20][lugar] and datos[lugar]>=carreras[24][lugar]):
-                inicio=5*4
-        elif(max_ing==100):
-            if(datos[lugar]>carreras[20][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[20][lugar] and datos[lugar]>carreras[40][lugar]):
-                inicio=20
-            elif(datos[lugar]<=carreras[40][lugar] and datos[lugar]>carreras[60][lugar]):
-                inicio=20*2
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>carreras[80][lugar]):
-                inicio=20*3
-            elif(datos[lugar]<=carreras[80][lugar] and datos[lugar]>=carreras[99][lugar]):
-                inicio=20*4
-        elif(max_ing==60):
-            if(datos[lugar]>carreras[12][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[12][lugar] and datos[lugar]>carreras[24][lugar]):
-                inicio=12
-            elif(datos[lugar]<=carreras[24][lugar] and datos[lugar]>carreras[36][lugar]):
-                inicio=12*2
-            elif(datos[lugar]<=carreras[36][lugar] and datos[lugar]>carreras[48][lugar]):
-                inicio=12*3
-            elif(datos[lugar]<=carreras[48][lugar] and datos[lugar]>=carreras[59][lugar]):
-                inicio=12*4
-        elif(max_ing==40):
-            if(datos[lugar]>carreras[8][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[8][lugar] and datos[lugar]>carreras[16][lugar]):
-                inicio=8
-            elif(datos[lugar]<=carreras[16][lugar] and datos[lugar]>carreras[24][lugar]):
-                inicio=8*2
-            elif(datos[lugar]<=carreras[24][lugar] and datos[lugar]>carreras[32][lugar]):
-                inicio=8*3
-            elif(datos[lugar]<=carreras[32][lugar] and datos[lugar]>=carreras[39][lugar]):
-                inicio=8*4
-        elif(max_ing==65):
-            if(datos[lugar]>carreras[13][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[13][lugar] and datos[lugar]>carreras[26][lugar]):
-                inicio=13
-            elif(datos[lugar]<=carreras[26][lugar] and datos[lugar]>carreras[39][lugar]):
-                inicio=13*2
-            elif(datos[lugar]<=carreras[39][lugar] and datos[lugar]>carreras[52][lugar]):
-                inicio=13*3
-            elif(datos[lugar]<=carreras[52][lugar] and datos[lugar]>=carreras[64][lugar]):
-                inicio=13*4
-        elif(max_ing==95):
-            if(datos[lugar]>carreras[19][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[19][lugar] and datos[lugar]>carreras[38][lugar]):
-                inicio=19
-            elif(datos[lugar]<=carreras[38][lugar] and datos[lugar]>carreras[57][lugar]):
-                inicio=19*2
-            elif(datos[lugar]<=carreras[57][lugar] and datos[lugar]>carreras[76][lugar]):
-                inicio=19*3
-            elif(datos[lugar]<=carreras[76][lugar] and datos[lugar]>=carreras[94][lugar]):
-                inicio=19*4
-        elif(max_ing==130):
-            if(datos[lugar]>carreras[26][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[26][lugar] and datos[lugar]>carreras[52][lugar]):
-                inicio=26
-            elif(datos[lugar]<=carreras[52][lugar] and datos[lugar]>carreras[78][lugar]):
-                inicio=26*2
-            elif(datos[lugar]<=carreras[78][lugar] and datos[lugar]>carreras[104][lugar]):
-                inicio=26*3
-            elif(datos[lugar]<=carreras[104][lugar] and datos[lugar]>=carreras[129][lugar]):
-                inicio=26*4
-        elif(max_ing==200):
-            if(datos[lugar]>carreras[20][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[20][lugar] and datos[lugar]>carreras[40][lugar]):
-                inicio=20
-            elif(datos[lugar]<=carreras[40][lugar] and datos[lugar]>carreras[60][lugar]):
-                inicio=20*2
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>carreras[80][lugar]):
-                inicio=20*3
-            elif(datos[lugar]<=carreras[80][lugar] and datos[lugar]>carreras[100][lugar]):
-                inicio=20*4
-            elif(datos[lugar]<=carreras[100][lugar] and datos[lugar]>carreras[120][lugar]):
-                inicio=20*5
-            elif(datos[lugar]<=carreras[120][lugar] and datos[lugar]>carreras[140][lugar]):
-                inicio=20*6
-            elif(datos[lugar]<=carreras[140][lugar] and datos[lugar]>carreras[160][lugar]):
-                inicio=20*7
-            elif(datos[lugar]<=carreras[160][lugar] and datos[lugar]>carreras[180][lugar]):
-                inicio=20*8
-            elif(datos[lugar]<=carreras[180][lugar] and datos[lugar]>carreras[199][lugar]):
-                inicio=20*9
-        elif(max_ing==105):
-            if(datos[lugar]>carreras[15][lugar]):
-                inicio=0
-            elif(datos[lugar]<=carreras[15][lugar] and datos[lugar]>carreras[30][lugar]):
-                inicio=15
-            elif(datos[lugar]<=carreras[30][lugar] and datos[lugar]>carreras[45][lugar]):
-                inicio=15*2
-            elif(datos[lugar]<=carreras[45][lugar] and datos[lugar]>carreras[60][lugar]):
-                inicio=15*3
-            elif(datos[lugar]<=carreras[60][lugar] and datos[lugar]>carreras[75][lugar]):
-                inicio=15*4
-            elif(datos[lugar]<=carreras[75][lugar] and datos[lugar]>carreras[90][lugar]):
-                inicio=15*5
-            elif(datos[lugar]<=carreras[90][lugar] and datos[lugar]>carreras[104][lugar]):
-                inicio=15*6
-        for posicion in range(inicio, max_ing): ###En caso de ser mas grande que el mas pequeño, se procedera a identificar mediante un for...
-            if(carreras[posicion][1]<=datos[1]):
-                expulsados.append(carreras[max_ing-1])
-                carreras=carreras[0:(posicion)]+[datos]+carreras[(posicion):(max_ing-1)]
-                return True
-    elif(n>=0 and n<(max_ing-1)): ###En caso de que aun no se llegue al tope, simplemente se iran agregando los valores a la lista
-        carreras.append(datos)
-        return True
-    elif(n==(max_ing-1)): ###Y, en el caso de que tras ingresar este valor, se alcance el tope, tras ingresarlo, se realizara un ordenamiento descendente de la lista. 
-        carreras.append(datos)
-        carreras=ordenar(carreras, lugar)
-        return True
 
 def entregarCarrera(indice): ###Funcion encargada de devolver el codigo de cada carrera, en funcion a un parametro indice que recibe;
     if(indice==0):
@@ -695,133 +508,357 @@ class psuService(ServiceBase):                                    ###Declaracion
                 elif(lugar==3):
                     carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_anteriores, lugar*2)
                 elif(lugar==4):
-                    if(len(carreras[3])<22):
+                    if(len(carreras[3])<125):
                         carreras[3]=almacenar(carreras[3], postulante, 125, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[4])<22):
+                    elif(len(carreras[4])<30):
                         carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[5])<22):
+                    elif(len(carreras[5])<90):
                         carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_anteriores, lugar*2)
                     else:
                         carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_anteriores, lugar*2)
                 elif(lugar==5):
                     carreras[7]=almacenar(carreras[7], postulante, 100, postulantes_anteriores, lugar*2)
                 elif(lugar==6):
-                    if(len(carreras[8])<22):
+                    if(len(carreras[8])<100):
                         carreras[8]=almacenar(carreras[8], postulante, 100, postulantes_anteriores, lugar*2)
                     else:
                         carreras[9]=almacenar(carreras[9], postulante, 100, postulantes_anteriores, lugar*2)
                 elif(lugar==7):
                     carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_anteriores, lugar*2)
                 elif(lugar==8):
-                    if(len(carreras[11])<22):
+                    if(len(carreras[11])<60):
                         carreras[11]=almacenar(carreras[11], postulante, 60, postulantes_anteriores, lugar*2)
                     else:
                         carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_anteriores, lugar*2)
                 elif(lugar==9):
-                    if(len(carreras[13])<22):
+                    if(len(carreras[13])<80):
                         carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_anteriores, lugar*2)
                     else:
                         carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_anteriores, lugar*2)
                 elif(lugar==10):
-                    if(len(carreras[15])<22):
+                    if(len(carreras[15])<100):
                         carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_anteriores, lugar*2)
                     else:
                         carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_anteriores, lugar*2)
                 elif(lugar==11):
                     carreras[17]=almacenar(carreras[17], postulante, 95, postulantes_anteriores, lugar*2)
                 elif(lugar==12):
-                    if(len(carreras[18])<22):
+                    if(len(carreras[18])<25):
                         carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[19])<22):
+                    elif(len(carreras[19])<25):
                         carreras[19]=almacenar(carreras[19], postulante, 25, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[20])<22):
+                    elif(len(carreras[20])<130):
                         carreras[20]=almacenar(carreras[20], postulante, 130, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[21])<22):
+                    elif(len(carreras[21])<200):
                         carreras[21]=almacenar(carreras[21], postulante, 200, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[22])<22):
+                    elif(len(carreras[22])<60):
                         carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[23])<22):
+                    elif(len(carreras[23])<80):
                         carreras[23]=almacenar(carreras[23], postulante, 80, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[24])<22):
+                    elif(len(carreras[24])<90):
                         carreras[24]=almacenar(carreras[24], postulante, 90, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[25])<22):
+                    elif(len(carreras[25])<60):
                         carreras[25]=almacenar(carreras[25], postulante, 60, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[26])<22):
+                    elif(len(carreras[26])<105):
                         carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_anteriores, lugar*2)
                     else:
                         carreras[27]=almacenar(carreras[27], postulante, 60, postulantes_anteriores, lugar*2)
             else: ###Caso de la ultima linea (linea vacia)
                 pass
+            
         postulantes_actuales=postulantes_anteriores
-        postulantes_anteriores=[]
 
-        print("primera parte completa")
-        j=0
-        sw=False
-        while(len(postulantes_anteriores)!=(5000-2055) or sw==False):
+        while(len(postulantes_anteriores)!=0):
+            j+=1
+            postulantes_anteriores=[]
             postulantes_anteriores=postulantes_actuales
             postulantes_actuales=[]
-            i=0
-            print(len(postulantes_anteriores))
             for postulante in postulantes_anteriores:
-                semaforo=almacenar_cambiante(carreras[11], postulante, 60, postulantes_actuales, 8*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[22], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[20], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[7], postulante, 100, postulantes_actuales, 5*2)
-                    i+=1
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[0], postulante, 35, postulantes_actuales, 1*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[17], postulante, 95, postulantes_actuales, 11*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[26], postulante, 105, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[24], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[18], postulante, 25, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[21], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[23], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[3], postulante, 125, postulantes_actuales, 4*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[19], postulante, 25, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[25], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[9], postulante, 100, postulantes_actuales, 6*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[27], postulante, 60, postulantes_actuales, 12*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[8], postulante, 100, postulantes_actuales, 6*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[14], postulante, 40, postulantes_actuales, 9*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[12], postulante, 30, postulantes_actuales, 8*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[10], postulante, 30, postulantes_actuales, 7*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[4], postulante, 30, postulantes_actuales, 4*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[5], postulante, 90, postulantes_actuales, 4*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[1], postulante, 35, postulantes_actuales, 2*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[2], postulante, 80, postulantes_actuales, 3*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[13], postulante, 80, postulantes_actuales, 9*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[6], postulante, 25, postulantes_actuales, 4*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[15], postulante, 100, postulantes_actuales, 10*2)
-                if(semaforo==False):
-                    semaforo=almacenar_cambiante(carreras[16], postulante, 65, postulantes_actuales, 10*2)
-            print("----------------------------------------------------------------------", i)
-            i=0
+                for i in range(0, 29):
+                    if(i==0):
+                        if(len(carreras[11])==60):
+                            if(postulante[16]<carreras[11][59][16]):
+                                pass
+                            else:
+                                carreras[11]=almacenar(carreras[11], postulante, 60, postulantes_actuales, 8*2)
+                                break
+                        else:
+                            carreras[11]=almacenar(carreras[11], postulante, 60, postulantes_actuales, 8*2)
+                            break
+                    elif(i==1):
+                        if(len(carreras[22])==60):
+                            if(postulante[24]<carreras[22][59][24]):
+                                pass
+                            else:
+                                carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==2):
+                        if(len(carreras[20])==60):
+                            if(postulante[24]<carreras[20][59][24]):
+                                pass
+                            else:
+                                carreras[20]=almacenar(carreras[20], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[20]=almacenar(carreras[20], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==3):
+                        if(len(carreras[7])==100):
+                            if(postulante[10]<carreras[7][99][10]):
+                                pass
+                            else:
+                                carreras[7]=almacenar(carreras[7], postulante, 100, postulantes_actuales, 5*2)
+                                break
+                        else:
+                            carreras[7]=almacenar(carreras[7], postulante, 100, postulantes_actuales, 5*2)
+                            break
+                    elif(i==4):
+                        if(len(carreras[0])==35):
+                            if(postulante[2]<carreras[0][34][2]):
+                                pass
+                            else:
+                                carreras[0]=almacenar(carreras[0], postulante, 35, postulantes_actuales, 1*2)
+                                break
+                        else:
+                            carreras[0]=almacenar(carreras[0], postulante, 35, postulantes_actuales, 1*2)
+                            break
+                    elif(i==5):
+                        if(len(carreras[17])==95):
+                            if(postulante[22]<carreras[17][94][22]):
+                                pass
+                            else:
+                                carreras[17]=almacenar(carreras[17], postulante, 95, postulantes_actuales, 11*2)
+                                break
+                        else:
+                            carreras[17]=almacenar(carreras[17], postulante, 95, postulantes_actuales, 11*2)
+                            break
+                    elif(i==6):
+                        if(len(carreras[26])==105):
+                            if(postulante[24]<carreras[26][104][24]):
+                                pass
+                            else:
+                                carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_actuales, 12*2)
+                            break
+                    elif(i==7):
+                        if(len(carreras[24])==60):
+                            if(postulante[24]<carreras[24][59][24]):
+                                pass
+                            else:
+                                carreras[24]=almacenar(carreras[24], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[24]=almacenar(carreras[24], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==8):
+                        if(len(carreras[18])==25):
+                            if(postulante[24]<carreras[18][24][24]):
+                                pass
+                            else:
+                                carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_actuales, 12*2)
+                            break
+                    elif(i==9):
+                        if(len(carreras[21])==60):
+                            if(postulante[24]<carreras[21][59][24]):
+                                pass
+                            else:
+                                carreras[21]=almacenar(carreras[21], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[21]=almacenar(carreras[21], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==10):
+                        if(len(carreras[23])==60):
+                            if(postulante[24]<carreras[23][59][24]):
+                                pass
+                            else:
+                                carreras[23]=almacenar(carreras[23], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[23]=almacenar(carreras[23], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==11):
+                        if(len(carreras[3])==125):
+                            if(postulante[8]<carreras[3][124][8]):
+                                pass
+                            else:
+                                carreras[3]=almacenar(carreras[3], postulante, 125, postulantes_actuales, 4*2)
+                                break
+                        else:
+                            carreras[3]=almacenar(carreras[3], postulante, 125, postulantes_actuales, 4*2)
+                            break
+                    elif(i==12):
+                        if(len(carreras[19])==25):
+                            if(postulante[24]<carreras[19][24][24]):
+                                pass
+                            else:
+                                carreras[19]=almacenar(carreras[19], postulante, 25, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[19]=almacenar(carreras[19], postulante, 25, postulantes_actuales, 12*2)
+                            break
+                    elif(i==13):
+                        if(len(carreras[25])==60):
+                            if(postulante[24]<carreras[25][59][24]):
+                                pass
+                            else:
+                                carreras[25]=almacenar(carreras[25], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[25]=almacenar(carreras[25], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==14):
+                        if(len(carreras[9])==100):
+                            if(postulante[12]<carreras[9][99][12]):
+                                pass
+                            else:
+                                carreras[9]=almacenar(carreras[9], postulante, 100, postulantes_actuales, 6*2)
+                                break
+                        else:
+                            carreras[9]=almacenar(carreras[9], postulante, 100, postulantes_actuales, 6*2)
+                            break
+                    elif(i==15):
+                        if(len(carreras[27])==60):
+                            if(postulante[24]<carreras[27][59][24]):
+                                pass
+                            else:
+                                carreras[27]=almacenar(carreras[27], postulante, 60, postulantes_actuales, 12*2)
+                                break
+                        else:
+                            carreras[27]=almacenar(carreras[27], postulante, 60, postulantes_actuales, 12*2)
+                            break
+                    elif(i==16):
+                        if(len(carreras[8])==100):
+                            if(postulante[12]<carreras[8][99][12]):
+                                pass
+                            else:
+                                carreras[8]=almacenar(carreras[8], postulante, 100, postulantes_actuales, 6*2)
+                                break
+                        else:
+                            carreras[8]=almacenar(carreras[8], postulante, 100, postulantes_actuales, 6*2)
+                            break
+                    elif(i==17):
+                        if(len(carreras[14])==40):
+                            if(postulante[18]<carreras[14][39][18]):
+                                pass
+                            else:
+                                carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_actuales, 9*2)
+                                break
+                        else:
+                            carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_actuales, 9*2)
+                            break
+                    elif(i==18):
+                        if(len(carreras[12])==30):
+                            if(postulante[16]<carreras[12][29][16]):
+                                pass
+                            else:
+                                carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_actuales, 8*2)
+                                break
+                        else:
+                            carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_actuales, 8*2)
+                            break
+                    elif(i==19):
+                        if(len(carreras[10])==30):
+                            if(postulante[14]<carreras[10][29][14]):
+                                pass
+                            else:
+                                carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_actuales, 7*2)
+                                break
+                        else:
+                            carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_actuales, 7*2)
+                            break
+                    elif(i==20):
+                        if(len(carreras[4])==30):
+                            if(postulante[8]<carreras[4][29][8]):
+                                pass
+                            else:
+                                carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_actuales, 4*2)
+                                break
+                        else:
+                            carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_actuales, 4*2)
+                            break
+                    elif(i==21):
+                        if(len(carreras[5])==90):
+                            if(postulante[8]<carreras[5][89][8]):
+                                pass
+                            else:
+                                carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_actuales, 4*2)
+                                break
+                        else:
+                            carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_actuales, 4*2)
+                            break
+                    elif(i==22):
+                        if(len(carreras[1])==35):
+                            if(postulante[4]<carreras[1][34][4]):
+                                pass
+                            else:
+                                carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_actuales, 2*2)
+                                break
+                        else:
+                            carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_actuales, 2*2)
+                            break
+                    elif(i==23):
+                        print(len(carreras[2]))
+                        if(len(carreras[2])==80):
+                            if(postulante[6]<carreras[2][79][6]):
+                                pass
+                            else:
+                                carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_actuales, 3*2)
+                                break
+                        else:
+                            carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_actuales, 3*2)
+                            break
+                    elif(i==24):
+                        if(len(carreras[13])==80):
+                            if(postulante[18]<carreras[13][79][18]):
+                                pass
+                            else:
+                                carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_actuales, 9*2)
+                                break
+                        else:
+                            carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_actuales, 9*2)
+                            break
+                    elif(i==25):
+                        if(len(carreras[6])==25):
+                            if(postulante[8]<carreras[6][24][8]):
+                                pass
+                            else:
+                                carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_actuales, 4*2)
+                                break
+                        else:
+                            carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_actuales, 4*2)
+                            break
+                    elif(i==26):
+                        if(len(carreras[15])==100):
+                            if(postulante[20]<carreras[15][99][20]):
+                                pass
+                            else:
+                                carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_actuales, 10*2)
+                                break
+                        else:
+                            carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_actuales, 10*2)
+                            break
+                    elif(i==27):
+                        if(len(carreras[16])==65):
+                            if(postulante[20]<carreras[16][64][20]):
+                                pass
+                            else:
+                                carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_actuales, 10*2)
+                                break
+                        else:
+                            carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_actuales, 10*2)
+                            break
+                    elif(i==28):
+                        break
+                
         print("Almacenado completo")
         ###Manejo del excel a entregar
         insertar(carreras) ###Creacion y llenado del excel final
