@@ -74,6 +74,8 @@ def almacenar(carreras, datos, max_ing, expulsados, lugar): ###Funcion que reali
         if(datos[lugar]<carreras[max_ing-1][lugar]):
             expulsados.append(datos)
             return carreras
+        elif(datos[lugar]==carreras[max_ing-1][lugar]):
+            return carreras
         if(max_ing==35):
             if(datos[lugar]>carreras[7][lugar]):
                 inicio=0
@@ -243,7 +245,7 @@ def almacenar(carreras, datos, max_ing, expulsados, lugar): ###Funcion que reali
             elif(datos[lugar]<=carreras[90][lugar] and datos[lugar]>carreras[104][lugar]):
                 inicio=15*6
         for posicion in range (inicio, max_ing): ###En caso de ser mas grande que el mas pequeño, se procedera a identificar mediante un for...
-            if(carreras[posicion][1]<=datos[1]):
+            if(carreras[posicion][lugar]<=datos[lugar]):
                 expulsados.append(carreras[max_ing-1])
                 carreras=carreras[0:(posicion)]+[datos]+carreras[(posicion):(max_ing-1)]
                 return carreras
@@ -317,6 +319,31 @@ def insertar(carreras): ###Funcion encargada de crear y poblar las diversas hoja
     excel = Workbook() ###Crea el excel
     for carrera in carreras: ###Luego, por cada carrera...
         indice = carreras.index(carrera) ###...Identifica su codigo...
+        if(indice==0):
+            indice_datos=2
+        elif(indice==1):
+            indice_datos=4
+        elif(indice==2):
+            indice_datos=6
+        elif(indice>=3 and indice<=6):
+            indice_datos=8
+        elif(indice==7):
+            indice_datos=10
+        elif(indice==9 or indice==8):
+            indice_datos=12
+        elif(indice==10):
+            indice_datos=14
+        elif(indice==12 or indice==11):
+            indice_datos=16
+        elif(indice==14 or indice==13):
+            indice_datos=18
+        elif(indice==16 or indice==15):
+            indice_datos=20
+        elif(indice==17):
+            indice_datos=22
+        elif(indice>=18):
+            indice_datos=24
+        
         hoja = excel.create_sheet(entregarCarrera(indice),indice) ###...Crea una nueva hoja...
         fila = 1
         ###Crea las etiquetas para las columnas de datos
@@ -327,7 +354,7 @@ def insertar(carreras): ###Funcion encargada de crear y poblar las diversas hoja
             fila+=1
             hoja['A'+str(fila)] = (carrera.index(dato)+1)
             hoja['B'+str(fila)] = dato[0]
-            hoja['C'+str(fila)] = dato[1]
+            hoja['C'+str(fila)] = dato[indice_datos]
     del excel['Sheet'] ###Luego limpia datos
     nombre="Admision UTEM.xlsx"
     excel.save(nombre) ###Y realiza el guardado del excel en la maquina
@@ -567,11 +594,11 @@ class psuService(ServiceBase):                                    ###Declaracion
                 pass
             
         postulantes_actuales=postulantes_anteriores
-
         while(len(postulantes_anteriores)!=0):
             postulantes_anteriores=[]
             postulantes_anteriores=postulantes_actuales
             postulantes_actuales=[]
+            print("------------")
             for postulante in postulantes_anteriores:
                 for i in range(0, 29):
                     if(i==0):
@@ -595,7 +622,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_actuales, 12*2)
                             break
                     elif(i==2):
-                        print(len(carreras[20]))
                         if(len(carreras[20])==130):
                             if(postulante[24]<carreras[20][129][24]):
                                 pass
@@ -756,6 +782,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_actuales, 9*2)
                             break
                     elif(i==18):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[12])==30):
                             if(postulante[16]<carreras[12][29][16]):
                                 pass
@@ -766,6 +794,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_actuales, 8*2)
                             break
                     elif(i==19):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[10])==30):
                             if(postulante[14]<carreras[10][29][14]):
                                 pass
@@ -776,6 +806,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_actuales, 7*2)
                             break
                     elif(i==20):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[4])==30):
                             if(postulante[8]<carreras[4][29][8]):
                                 pass
@@ -786,6 +818,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_actuales, 4*2)
                             break
                     elif(i==21):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[5])==90):
                             if(postulante[8]<carreras[5][89][8]):
                                 pass
@@ -796,6 +830,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_actuales, 4*2)
                             break
                     elif(i==22):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[1])==35):
                             if(postulante[4]<carreras[1][34][4]):
                                 pass
@@ -806,7 +842,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_actuales, 2*2)
                             break
                     elif(i==23):
-                        print(len(carreras[2]))
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[2])==80):
                             if(postulante[6]<carreras[2][79][6]):
                                 pass
@@ -817,6 +854,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_actuales, 3*2)
                             break
                     elif(i==24):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[13])==80):
                             if(postulante[18]<carreras[13][79][18]):
                                 pass
@@ -827,6 +866,10 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_actuales, 9*2)
                             break
                     elif(i==25):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[6])==25):
                             if(postulante[8]<carreras[6][24][8]):
                                 pass
@@ -837,6 +880,8 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_actuales, 4*2)
                             break
                     elif(i==26):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[15])==100):
                             if(postulante[20]<carreras[15][99][20]):
                                 pass
@@ -847,10 +892,15 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_actuales, 10*2)
                             break
                     elif(i==27):
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
+                        if(len(postulantes_anteriores)==18):
+                            print(i)
                         if(len(carreras[16])==65):
                             if(postulante[20]<carreras[16][64][20]):
                                 pass
                             else:
+                                print(len(carreras[16]))
                                 carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_actuales, 10*2)
                                 break
                         else:
@@ -858,7 +908,7 @@ class psuService(ServiceBase):                                    ###Declaracion
                             break
                     elif(i==28):
                         break
-                
+        
         print("Almacenado completo")
         ###Manejo del excel a entregar
         insertar(carreras) ###Creacion y llenado del excel final
