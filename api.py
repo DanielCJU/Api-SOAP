@@ -36,17 +36,17 @@ from spyne.model.primitive import String
 ### Sector de librerias importadas por requerimientos
 from openpyxl import Workbook ###Libreria para manejo de archivos excel
 import base64                 ###Libreria para trabajar BASE64
-from mimetypes import guess_type, guess_extension
-import re
+from mimetypes import guess_type, guess_extension ###Libreria para manejar y detectar tipos mime
+import re ###Libreria para manejar y detectar tipos mime
 
 ############################################################      Funciones Externas Utilizadas      ############################################################
-def mayor(persona):
+def mayor(persona): ###Funcion para detectar cual es la carrera con el mayor puntaje ponderado de un postulante
     mayor=0
     pos_mayor=0
-    for i in range(2,len(persona), 2):
-        if(persona[i]>mayor):
-            mayor=persona[i]
-            pos_mayor=persona[i-1]
+    for i in range(2,len(persona), 2): ###Ciclo para revisar cada puntaje ponderado
+        if(persona[i]>mayor): ###Si es mayor que la variable "mayor"...
+            mayor=persona[i]  ###Se registra el puntaje ponderado...
+            pos_mayor=persona[i-1] ###y el indice de este
     return pos_mayor
 
 def ordenar(carrera, lugar): ###Funcion encargada de ordenar el listado de alumnos de una carrera; utiliza el metodo Quicksort; el parametro que recive es una lista
@@ -449,7 +449,6 @@ class psuService(ServiceBase):                                    ###Declaracion
         Gracias a que el programa esta elaborado en python, es pisoble hacer algo asi; si desea usar otro archivo en 
         otra ubicacion distinta a la de este codigo python, recordar cambiar lo de *puntajes.csv".
         """
-        print("Datos recibidos")
         ###Activacion de variables de apoyo y almacenamiento
         n=[0, 0, 0, 0, 0, 0] ###Contadores para areas con multiples carreras
         i=0
@@ -473,12 +472,7 @@ class psuService(ServiceBase):                                    ###Declaracion
         message_bytes = base64.b64decode(base64_bytes)
         message = message_bytes.decode('ascii')
         message=message.split("\n") ###Se realiza separacion de cada linea del texto
-        
-        if(len(message)<2100): ###Condicion para detectar si la cantidad de postulantes recibidos es aceptable por el sistema
-            yield("Cantidad de postulantes demasiado bajo (la cantidad de postulantes minima debe ser mayor a 2100)")
-            return 0
-        print("Datos corroborados")
-        q=0
+
         ###Ciclo iterativo linea por linea para obtener toda la informacion del documento recibido
         for linea in message: 
             if(len(linea)!=0): ###Condicion para detectar si el arreglo esta vacio (ultima linea), o tienen contenido
@@ -492,115 +486,115 @@ class psuService(ServiceBase):                                    ###Declaracion
                 matematicas=int(linea[4])
                 ciencias=int(linea[5])
                 historia=int(linea[6])
+                if(((matematicas+lenguaje)/2)>=float(450)):
+                    ### Se almacena los puntajes ponderados de cada area (se trabaja con "areas", debido a las carreras de igual ponderacion)
+                    c1=float(nem*0.15+ranking*0.2+lenguaje*0.3+matematicas*0.25)     ###Carrera 21089
+                    c2=float(nem*0.2+ranking*0.2+lenguaje*0.4+matematicas*0.1)       ###Carrera 21002
+                    c3=float(nem*0.2+ranking*0.2+lenguaje*0.3+matematicas*0.15)      ###Carrera 21012
+                    c4_7=float(nem*0.1+ranking*0.2+lenguaje*0.3+matematicas*0.3)     ###Carreras: 21048-21047
+                    c8=float(nem*0.15+ranking*0.25+lenguaje*0.2+matematicas*0.2)     ###Carrera 21074
+                    c9_10=float(nem*0.2+ranking*0.2+lenguaje*0.15+matematicas*0.35)  ###Carreras: 21032-21087
+                    c11=float(nem*0.15+ranking*0.35+lenguaje*0.2+matematicas*0.2)    ###Carrera 21073
+                    c12_13=float(nem*0.15+ranking*0.25+lenguaje*0.2+matematicas*0.3) ###Carreras: 21039-21080
+                    c14_15=float(nem*0.1+ranking*0.25+lenguaje*0.15+matematicas*0.3) ###Carreras: 21083-21024
+                    c16_17=float(nem*0.1+ranking*0.4+lenguaje*0.3+matematicas*0.1)   ###Carreras: 21023-21043
+                    c18=float(nem*0.2+ranking*0.3+lenguaje*0.2+matematicas*0.1)      ###Carrera 21046
+                    c19_28=float(nem*0.1+ranking*0.25+lenguaje*0.2+matematicas*0.35) ###Carreras: 21071-21045
+                    
+                    ###Se realiza una comparacion en funcion del puntaje de ciencias e historia; el mayor es agregado al puntaje final
+                    if(historia>=ciencias): ###En caso de que el puntaje de historia sea mayor que el de ciencias
+                        c1=c1+float(historia*0.1)
+                        c2=c2+float(historia*0.1)
+                        c3=c3+float(historia*0.15)
+                        c4_7=c4_7+float(historia*0.1)
+                        c8=c8+float(historia*0.2)
+                        c9_10=c9_10+float(historia*0.1)
+                        c11=c11+float(historia*0.1)
+                        c12_13=c12_13+float(historia*0.1)
+                        c14_15=c14_15+float(historia*0.2)
+                        c16_17=c16_17+float(historia*0.1)
+                        c18=c18+float(historia*0.2)
+                        c19_28=c19_28+float(historia*0.1)
+                    else:                    ###En el casocontrario, en el que ciencias es mayor a historia
+                        c1=c1+float(ciencias*0.1)
+                        c2=c2+float(ciencias*0.1)
+                        c3=c3+float(ciencias*0.1)
+                        c4_7=c4_7+float(ciencias*0.1)
+                        c8=c8+float(ciencias*0.2)
+                        c9_10=c9_10+float(ciencias*0.1)
+                        c11=c11+float(ciencias*0.1)
+                        c12_13=c12_13+float(ciencias*0.1)
+                        c14_15=c14_15+float(ciencias*0.2)
+                        c16_17=c16_17+float(ciencias*0.1)
+                        c18=c18+float(ciencias*0.2)
+                        c19_28=c19_28+float(ciencias*0.1)
 
-                ### Se almacena los puntajes ponderados de cada area (se trabaja con "areas", debido a las carreras de igual ponderacion)
-                c1=float(nem*0.15+ranking*0.2+lenguaje*0.3+matematicas*0.25)     ###Carrera 21089
-                c2=float(nem*0.2+ranking*0.2+lenguaje*0.4+matematicas*0.1)       ###Carrera 21002
-                c3=float(nem*0.2+ranking*0.2+lenguaje*0.3+matematicas*0.15)      ###Carrera 21012
-                c4_7=float(nem*0.1+ranking*0.2+lenguaje*0.3+matematicas*0.3)     ###Carreras: 21048-21047
-                c8=float(nem*0.15+ranking*0.25+lenguaje*0.2+matematicas*0.2)     ###Carrera 21074
-                c9_10=float(nem*0.2+ranking*0.2+lenguaje*0.15+matematicas*0.35)  ###Carreras: 21032-21087
-                c11=float(nem*0.15+ranking*0.35+lenguaje*0.2+matematicas*0.2)    ###Carrera 21073
-                c12_13=float(nem*0.15+ranking*0.25+lenguaje*0.2+matematicas*0.3) ###Carreras: 21039-21080
-                c14_15=float(nem*0.1+ranking*0.25+lenguaje*0.15+matematicas*0.3) ###Carreras: 21083-21024
-                c16_17=float(nem*0.1+ranking*0.4+lenguaje*0.3+matematicas*0.1)   ###Carreras: 21023-21043
-                c18=float(nem*0.2+ranking*0.3+lenguaje*0.2+matematicas*0.1)      ###Carrera 21046
-                c19_28=float(nem*0.1+ranking*0.25+lenguaje*0.2+matematicas*0.35) ###Carreras: 21071-21045
-                
-                ###Se realiza una comparacion en funcion del puntaje de ciencias e historia; el mayor es agregado al puntaje final
-                if(historia>=ciencias): ###En caso de que el puntaje de historia sea mayor que el de ciencias
-                    c1=c1+float(historia*0.1)
-                    c2=c2+float(historia*0.1)
-                    c3=c3+float(historia*0.15)
-                    c4_7=c4_7+float(historia*0.1)
-                    c8=c8+float(historia*0.2)
-                    c9_10=c9_10+float(historia*0.1)
-                    c11=c11+float(historia*0.1)
-                    c12_13=c12_13+float(historia*0.1)
-                    c14_15=c14_15+float(historia*0.2)
-                    c16_17=c16_17+float(historia*0.1)
-                    c18=c18+float(historia*0.2)
-                    c19_28=c19_28+float(historia*0.1)
-                else:                    ###En el casocontrario, en el que ciencias es mayor a historia
-                    c1=c1+float(ciencias*0.1)
-                    c2=c2+float(ciencias*0.1)
-                    c3=c3+float(ciencias*0.1)
-                    c4_7=c4_7+float(ciencias*0.1)
-                    c8=c8+float(ciencias*0.2)
-                    c9_10=c9_10+float(ciencias*0.1)
-                    c11=c11+float(ciencias*0.1)
-                    c12_13=c12_13+float(ciencias*0.1)
-                    c14_15=c14_15+float(ciencias*0.2)
-                    c16_17=c16_17+float(ciencias*0.1)
-                    c18=c18+float(ciencias*0.2)
-                    c19_28=c19_28+float(ciencias*0.1)
-
-                ###Ya con todos los puntajes ponderados, estos son almacenados; Este almacenamiento es para crear los grupos con los mejores puntajes para cada area
-                ###Estos grupos son de 2100 estudiantes, para evitar caer en el caso de que no sean suficientes estudiantes para cumplir la cuota del documento (2055)
-                postulante=[rut,1,c1,2,c2,3,c3,4,c4_7,5,c8,6,c9_10,7,c11,8,c12_13,9,c14_15,10,c16_17,11,c18,12,c19_28]
-                lugar=mayor(postulante) ###Se detecta cual es el puntaje mas alto, para luego internar ingresarlo en el area correspondiente; en caso de no entrar, se registra para su posterior re ubicacion
-                if(lugar==1):
-                    carreras[0]=almacenar(carreras[0], postulante, 35, postulantes_anteriores, lugar*2)
-                elif(lugar==2):
-                    carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_anteriores, lugar*2)
-                elif(lugar==3):
-                    carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_anteriores, lugar*2)
-                elif(lugar==4):
-                    if(len(carreras[3])<125):
-                        carreras[3]=almacenar(carreras[3], postulante, 125, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[4])<30):
-                        carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[5])<90):
-                        carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_anteriores, lugar*2)
-                elif(lugar==5):
-                    carreras[7]=almacenar(carreras[7], postulante, 100, postulantes_anteriores, lugar*2)
-                elif(lugar==6):
-                    if(len(carreras[8])<100):
-                        carreras[8]=almacenar(carreras[8], postulante, 100, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[9]=almacenar(carreras[9], postulante, 100, postulantes_anteriores, lugar*2)
-                elif(lugar==7):
-                    carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_anteriores, lugar*2)
-                elif(lugar==8):
-                    if(len(carreras[11])<60):
-                        carreras[11]=almacenar(carreras[11], postulante, 60, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_anteriores, lugar*2)
-                elif(lugar==9):
-                    if(len(carreras[13])<80):
-                        carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_anteriores, lugar*2)
-                elif(lugar==10):
-                    if(len(carreras[15])<100):
-                        carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_anteriores, lugar*2)
-                elif(lugar==11):
-                    carreras[17]=almacenar(carreras[17], postulante, 95, postulantes_anteriores, lugar*2)
-                elif(lugar==12):
-                    if(len(carreras[18])<25):
-                        carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[19])<25):
-                        carreras[19]=almacenar(carreras[19], postulante, 25, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[20])<130):
-                        carreras[20]=almacenar(carreras[20], postulante, 130, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[21])<200):
-                        carreras[21]=almacenar(carreras[21], postulante, 200, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[22])<60):
-                        carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[23])<80):
-                        carreras[23]=almacenar(carreras[23], postulante, 80, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[24])<90):
-                        carreras[24]=almacenar(carreras[24], postulante, 90, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[25])<60):
-                        carreras[25]=almacenar(carreras[25], postulante, 60, postulantes_anteriores, lugar*2)
-                    elif(len(carreras[26])<105):
-                        carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_anteriores, lugar*2)
-                    else:
-                        carreras[27]=almacenar(carreras[27], postulante, 60, postulantes_anteriores, lugar*2)
+                    ###Ya con todos los puntajes ponderados, estos son almacenados; Este almacenamiento es para crear los grupos con los mejores puntajes para cada area
+                    ###Estos grupos son de 2100 estudiantes, para evitar caer en el caso de que no sean suficientes estudiantes para cumplir la cuota del documento (2055)
+                    postulante=[rut,1,c1,2,c2,3,c3,4,c4_7,5,c8,6,c9_10,7,c11,8,c12_13,9,c14_15,10,c16_17,11,c18,12,c19_28]
+                    lugar=mayor(postulante) ###Se detecta cual es el puntaje mas alto, para luego internar ingresarlo en el area correspondiente; en caso de no entrar, se registra para su posterior re ubicacion
+                    if(lugar==1):
+                        carreras[0]=almacenar(carreras[0], postulante, 35, postulantes_anteriores, lugar*2)
+                    elif(lugar==2):
+                        carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_anteriores, lugar*2)
+                    elif(lugar==3):
+                        carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_anteriores, lugar*2)
+                    elif(lugar==4):
+                        if(len(carreras[3])<125):
+                            carreras[3]=almacenar(carreras[3], postulante, 125, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[4])<30):
+                            carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[5])<90):
+                            carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_anteriores, lugar*2)
+                    elif(lugar==5):
+                        carreras[7]=almacenar(carreras[7], postulante, 100, postulantes_anteriores, lugar*2)
+                    elif(lugar==6):
+                        if(len(carreras[8])<100):
+                            carreras[8]=almacenar(carreras[8], postulante, 100, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[9]=almacenar(carreras[9], postulante, 100, postulantes_anteriores, lugar*2)
+                    elif(lugar==7):
+                        carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_anteriores, lugar*2)
+                    elif(lugar==8):
+                        if(len(carreras[11])<60):
+                            carreras[11]=almacenar(carreras[11], postulante, 60, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_anteriores, lugar*2)
+                    elif(lugar==9):
+                        if(len(carreras[13])<80):
+                            carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_anteriores, lugar*2)
+                    elif(lugar==10):
+                        if(len(carreras[15])<100):
+                            carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[16]=almacenar(carreras[16], postulante, 65, postulantes_anteriores, lugar*2)
+                    elif(lugar==11):
+                        carreras[17]=almacenar(carreras[17], postulante, 95, postulantes_anteriores, lugar*2)
+                    elif(lugar==12):
+                        if(len(carreras[18])<25):
+                            carreras[18]=almacenar(carreras[18], postulante, 25, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[19])<25):
+                            carreras[19]=almacenar(carreras[19], postulante, 25, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[20])<130):
+                            carreras[20]=almacenar(carreras[20], postulante, 130, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[21])<200):
+                            carreras[21]=almacenar(carreras[21], postulante, 200, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[22])<60):
+                            carreras[22]=almacenar(carreras[22], postulante, 60, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[23])<80):
+                            carreras[23]=almacenar(carreras[23], postulante, 80, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[24])<90):
+                            carreras[24]=almacenar(carreras[24], postulante, 90, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[25])<60):
+                            carreras[25]=almacenar(carreras[25], postulante, 60, postulantes_anteriores, lugar*2)
+                        elif(len(carreras[26])<105):
+                            carreras[26]=almacenar(carreras[26], postulante, 105, postulantes_anteriores, lugar*2)
+                        else:
+                            carreras[27]=almacenar(carreras[27], postulante, 60, postulantes_anteriores, lugar*2)
             else: ###Caso de la ultima linea (linea vacia)
                 pass
         ###Se procede a almacenar y preparar los datos para el escenario de re ubicacion  
@@ -795,8 +789,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[14]=almacenar(carreras[14], postulante, 40, postulantes_actuales, 9*2)
                             break
                     elif(i==18):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[12])==30):
                             if(postulante[16]<carreras[12][29][16]):
                                 pass
@@ -807,8 +799,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[12]=almacenar(carreras[12], postulante, 30, postulantes_actuales, 8*2)
                             break
                     elif(i==19):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[10])==30):
                             if(postulante[14]<carreras[10][29][14]):
                                 pass
@@ -819,8 +809,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[10]=almacenar(carreras[10], postulante, 30, postulantes_actuales, 7*2)
                             break
                     elif(i==20):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[4])==30):
                             if(postulante[8]<carreras[4][29][8]):
                                 pass
@@ -831,8 +819,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[4]=almacenar(carreras[4], postulante, 30, postulantes_actuales, 4*2)
                             break
                     elif(i==21):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[5])==90):
                             if(postulante[8]<carreras[5][89][8]):
                                 pass
@@ -843,8 +829,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[5]=almacenar(carreras[5], postulante, 90, postulantes_actuales, 4*2)
                             break
                     elif(i==22):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[1])==35):
                             if(postulante[4]<carreras[1][34][4]):
                                 pass
@@ -855,8 +839,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[1]=almacenar(carreras[1], postulante, 35, postulantes_actuales, 2*2)
                             break
                     elif(i==23):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[2])==80):
                             if(postulante[6]<carreras[2][79][6]):
                                 pass
@@ -867,8 +849,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[2]=almacenar(carreras[2], postulante, 80, postulantes_actuales, 3*2)
                             break
                     elif(i==24):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[13])==80):
                             if(postulante[18]<carreras[13][79][18]):
                                 pass
@@ -879,10 +859,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[13]=almacenar(carreras[13], postulante, 80, postulantes_actuales, 9*2)
                             break
                     elif(i==25):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[6])==25):
                             if(postulante[8]<carreras[6][24][8]):
                                 pass
@@ -893,8 +869,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[6]=almacenar(carreras[6], postulante, 25, postulantes_actuales, 4*2)
                             break
                     elif(i==26):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[15])==100):
                             if(postulante[20]<carreras[15][99][20]):
                                 pass
@@ -905,10 +879,6 @@ class psuService(ServiceBase):                                    ###Declaracion
                             carreras[15]=almacenar(carreras[15], postulante, 100, postulantes_actuales, 10*2)
                             break
                     elif(i==27):
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
-                        if(len(postulantes_anteriores)==18):
-                            print(i)
                         if(len(carreras[16])==65):
                             if(postulante[20]<carreras[16][64][20]):
                                 pass
@@ -921,6 +891,75 @@ class psuService(ServiceBase):                                    ###Declaracion
                             break
                     elif(i==28):
                         break
+        ###Ordenamiento en caso de no completarse el llenado de personas
+        for indice in range(0,28): ###Se revisa cada carrera
+            if(indice==0): ###Se identifica que valor es el importante para ordenar
+                indice_datos=2
+            elif(indice==1):
+                indice_datos=4
+            elif(indice==2):
+                indice_datos=6
+            elif(indice>=3 and indice<=6):
+                indice_datos=8
+            elif(indice==7):
+                indice_datos=10
+            elif(indice==9 or indice==8):
+                indice_datos=12
+            elif(indice==10):
+                indice_datos=14
+            elif(indice==12 or indice==11):
+                indice_datos=16
+            elif(indice==14 or indice==13):
+                indice_datos=18
+            elif(indice==16 or indice==15):
+                indice_datos=20
+            elif(indice==17):
+                indice_datos=22
+            elif(indice>=18):
+                indice_datos=24
+                
+            if(indice in [0,1]): ###Luego para cada carrera que tiene cierta cantidad tope...
+                if(len(carreras[indice])<35): ###Se corrobora si llega o no
+                    carreras[indice]=ordenar(carreras[indice], indice_datos) ###En caso de no llegar, se ordena, en caso de estar lleno, no se hace nada
+            elif(indice in [2,13,23]):
+                if(len(carreras[indice])<80):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [3]):
+                if(len(carreras[indice])<125):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [26]):
+                if(len(carreras[indice])<105):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [21]):
+                if(len(carreras[indice])<200):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [20]):
+                if(len(carreras[indice])<130):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [17]):
+                if(len(carreras[indice])<95):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [16]):
+                if(len(carreras[indice])<65):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [14]):
+                if(len(carreras[indice])<40):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [11,22,25,27]):
+                if(len(carreras[indice])<60):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [7,8,9,15]):
+                if(len(carreras[indice])<100):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [6,18,19]):
+                if(len(carreras[indice])<25):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [4,10,12]):
+                if(len(carreras[indice])<30):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
+            elif(indice in [5,24]):
+                if(len(carreras[indice])<90):
+                    carreras[indice]=ordenar(carreras[indice], indice_datos)
         ###---------------------------------------------------------
         ###Manejo del excel a entregar
         insertar(carreras) ###Creacion y llenado del excel final
@@ -952,7 +991,7 @@ if __name__ == '__main__':
     # Python's built-in wsgi server but you're not
     # supposed to use it in production.
     from wsgiref.simple_server import make_server
-    wsgi_app = WsgiApplication(application, chunked=True, max_content_length=2097152*100, block_length=1024*1024*500)
+    wsgi_app = WsgiApplication(application, chunked=True, max_content_length=2097152*100*10, block_length=1024*1024*500*10)
     server = make_server('127.0.0.1', 8000, wsgi_app) ###Activacion del servidor en ip 127.0.0.1 (Localhost), en el puerto 8000
     print("\nServidor en Linea") ###Aviso en terminal de que el servidor esta operativo
     server.serve_forever() ###Activacion del servidor
