@@ -61,11 +61,12 @@ http://localhost:8000/?wsdl
 
 ## Ejecutando las pruebas ⚙️
 
-_El software fue testeado con 4 documentos, uno de 100, 5000, otro de 10000 y otro de 12000, en el caso del de 100 lineas detecto exitosamente la invalides de este por ser una cantidad inferior a la necesitada; en el caso de los otros 3, realizo el analisis y verificacion del tipo ime, el decode del string, la generacion del Excel requerido y el posterior envio de los datos solicitados_
+_El software fue testeado con documentos de 100, 1000, 5000, 10000, 12000, 500000, 1000000 y 2000000 de participantes, siendo que en todos se presento un correcto funcionamiento estandar, y en el caso de 100 y 1000, retorno un excel el cual agrego a todos, pero no pudiendo completar todas las carreras debido a la falta de gente 
+que postulo (el total de postulantes a matricular es de 2055 estudiantes)
 
 ## Notas adicionales 📖
 * El string a recibir debe estar en base 64.
-* El archivo CSV del que se obtiene debe contar mas de 2101 estudiantes para el correcto funcionamiento (revisar carpeta "Material Adicional")
+* Los elementos del archivo deben respetar la estructura expuesta en el PDF del problema (el cual se encuentra en la carpeta "Material de Apoyo")
 * Enlace archivo puntajes.csv: https://drive.google.com/file/d/1v5yV9-jAjymUSEg27YgiJ3kOykknEU7v/view?usp=sharing
 
 ## Autores ✒️
